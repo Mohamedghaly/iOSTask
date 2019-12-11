@@ -7,24 +7,40 @@
 //
 
 import UIKit
+import AlamofireImage
+
+
+
 
 class ReposVC: UIViewController {
-
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    var Repos_array : [UserRepoElement] = []
+    var list = [UserRepoElement]()
+    var pageNumber : Int  = 1
+    var isLoadingMore = false
+    var refreshControl = UIRefreshControl()
+    var flag_for_refreshing : Int = 0
+    var first_openning_app : Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        refresh_controller_handeller()
+        check_saved_data()
+        self.pageNumber = 1
+        first_openning_app = 1
+        Get_data_func(self.pageNumber)
+        
+    }
+    func refresh_controller_handeller(){
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        tableView.addSubview(refreshControl)
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
+

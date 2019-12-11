@@ -7,27 +7,35 @@
 //
 
 import XCTest
+@testable import iOSTask
 
 class iOSTaskTests: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+    func testApi() {
+        
+                            let url = setup_url(1, 10)
+                            var request = URLRequest(url: url)
+                            request.httpMethod = "GET"
+                            
+                            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                            // MARK: - URL Session Handeller
+                            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                                
+                              
+                              if error != nil{
+                                  XCTFail("network fail or server fail")
+                              }
+                              guard let respnse = try? JSONDecoder().decode( [UserRepoElement].self , from: data!) else {
+                                 
+                                 XCTFail("There is an error in data")
+                               
+                                 return}
+                                if response == nil{
+                                     XCTFail("There is no response")
+                                }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+                                    }.resume()
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
+    
 }
