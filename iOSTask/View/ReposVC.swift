@@ -14,7 +14,12 @@ import AlamofireImage
 
 class ReposVC: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView!{
+        didSet{
+            tableView.delegate = self
+            tableView.dataSource = self
+        }
+    }
     
     var Repos_array : [UserRepoElement] = []
     var list = [UserRepoElement]()
@@ -26,8 +31,7 @@ class ReposVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        
         refresh_controller_handeller()
         check_saved_data()
         self.pageNumber = 1
